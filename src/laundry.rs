@@ -1,9 +1,9 @@
-use reqwest::multipart;
+use reqwest::{Client, multipart};
 use strum_macros::EnumIter;
 
 
 // Washer 1 is closest to the door, then 2, 3 and so on
-#[derive(Debug, Clone, Copy, EnumIter)]
+#[derive(Debug, Clone, Copy, EnumIter, PartialEq, Eq)]
 pub enum LaundryMachine {
     Washer1,
     Washer2,
@@ -25,9 +25,7 @@ impl LaundryMachine {
         }
     }
 
-    pub async fn is_free(&self) -> Result<bool, Box<dyn std::error::Error>> {
-        let client = reqwest::Client::new();
-
+    pub async fn is_free(&self, client: &Client) -> Result<bool, Box<dyn std::error::Error>> {
         let form = multipart::Form::new().text("goodsId", self.goods_id());
 
         let response = client
