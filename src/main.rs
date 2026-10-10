@@ -12,7 +12,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("O: machine is free to use");
     println!("X: machine is in use (not available)");
     println!("?: an error happened (check internet connection/turn off VPN)");
-    let client = reqwest::Client::new();
+    let client = reqwest::Client::builder()
+        .no_proxy()
+        .build()?;
     loop {
         let local_time = Local::now().format("%T");
         let mut result_text= format!("[{local_time}] (Washers) ").to_string();
@@ -24,9 +26,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
             match machine.is_free(&client).await {
                 Ok(is_free) => result_text += if is_free {"O"} else {"X"},
-                Err(error) => {
-                    result_text += "?"
-                }
+                Err(_) => result_text += "?"
             }
         }
         println!("{result_text}");
