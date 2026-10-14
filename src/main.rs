@@ -1,10 +1,10 @@
 pub mod laundry;
 
-use std::time::{Duration};
+use std::time::Duration;
 
 use crate::laundry::LaundryMachine;
-use strum::IntoEnumIterator;
 use chrono::Local;
+use strum::IntoEnumIterator;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -12,12 +12,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("O: machine is free to use");
     println!("X: machine is in use (not available)");
     println!("?: an error happened (check internet connection/turn off VPN)");
-    let client = reqwest::Client::builder()
-        .no_proxy()
-        .build()?;
+    let client = reqwest::Client::builder().no_proxy().build()?;
     loop {
         let local_time = Local::now().format("%T");
-        let mut result_text= format!("[{local_time}] (Washers) ").to_string();
+        let mut result_text = format!("[{local_time}] (Washers) ").to_string();
         for machine in LaundryMachine::iter() {
             // Add space before dryer
             if machine == LaundryMachine::Dryer {
@@ -25,8 +23,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             }
 
             match machine.is_free(&client).await {
-                Ok(is_free) => result_text += if is_free {"O"} else {"X"},
-                Err(_) => result_text += "?"
+                Ok(is_free) => result_text += if is_free { "O" } else { "X" },
+                Err(_) => result_text += "?",
             }
         }
         println!("{result_text}");

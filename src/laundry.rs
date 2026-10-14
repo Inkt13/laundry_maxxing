@@ -1,7 +1,6 @@
 use reqwest::{Client, multipart};
 use strum_macros::EnumIter;
 
-
 // Washer 1 is closest to the door, then 2, 3 and so on
 #[derive(Debug, Clone, Copy, EnumIter, PartialEq, Eq)]
 pub enum LaundryMachine {
@@ -40,6 +39,9 @@ impl LaundryMachine {
             .await?
             .error_for_status()?;
 
-        Ok(!response.text().await?.contains("设备工作中，请更换设备使用"))
+        Ok(!response
+            .text()
+            .await?
+            .contains("设备工作中，请更换设备使用"))
     }
 }
