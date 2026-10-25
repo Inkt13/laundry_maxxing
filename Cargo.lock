@@ -139,6 +139,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "colored_text"
+version = "0.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a417299b51c29a65cc9261c6d1223bb870bced2b195448ef4ae0137c8ee42418"
+
+[[package]]
 name = "compression-codecs"
 version = "0.4.45"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -678,6 +684,7 @@ name = "laundry_maxxing"
 version = "0.1.0"
 dependencies = [
  "chrono",
+ "colored_text",
  "reqwest",
  "serde_json",
  "strum",

@@ -2,32 +2,39 @@ pub mod laundry;
 
 use std::time::Duration;
 
+use colored_text::{self, Colorize};
 use crate::laundry::LaundryMachine;
 use chrono::Local;
 use strum::IntoEnumIterator;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    println!("Welcone to laundry maxxer");
-    println!("O: machine is free to use");
-    println!("X: machine is in use (not available)");
-    println!("?: an error happened (check internet connection/turn off VPN)");
+    println!("{}", "Welcone to laundry maxxer".yellow());
+    println!("{}: machine is free to use", "O".green());
+    println!("{}: machine is in use (not available)", "X".red());
+    println!("{}: an error happened (check internet connection/turn off VPN)", "?".black());
     let client = reqwest::Client::builder().no_proxy().build()?;
     loop {
         let local_time = Local::now().format("%T");
-        let mut result_text = format!("[{local_time}] (Washers) ").to_string();
+        print!("{} ", local_time.blue());
+        print!("{} ", "(Washers) ".yellow());
         for machine in LaundryMachine::iter() {
             // Add space before dryer
             if machine == LaundryMachine::Dryer {
-                result_text += "  (Dryer) "
+                print!("{}", "  (Dryer) ".yellow());
             }
 
             match machine.is_free(&client).await {
-                Ok(is_free) => result_text += if is_free { "O" } else { "X" },
-                Err(_) => result_text += "?",
+                Ok(is_free) => {
+                    if is_free { 
+                        print!("{}", "O".green()) 
+                    } else { 
+                        print!("{}", "X".red())
+                    }
+                },
+                Err(_) => print!("{}", "?".black()),
             }
         }
-        println!("{result_text}");
         std::thread::sleep(Duration::from_secs(10));
     }
 }
