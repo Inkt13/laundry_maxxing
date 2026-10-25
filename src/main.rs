@@ -12,12 +12,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("{}", "Welcone to laundry maxxer".yellow());
     println!("{}: machine is free to use", "O".green());
     println!("{}: machine is in use (not available)", "X".red());
-    println!("{}: an error happened (check internet connection/turn off VPN)", "?".black());
+    println!("?: an error happened (check internet connection/turn off VPN)");
     let client = reqwest::Client::builder().no_proxy().build()?;
     loop {
         let local_time = Local::now().format("%T");
-        print!("{} ", local_time.blue());
-        print!("{} ", "(Washers) ".yellow());
+        print!("[{}] ", local_time.blue());
+        print!("{} ", "(Washers)".yellow());
         for machine in LaundryMachine::iter() {
             // Add space before dryer
             if machine == LaundryMachine::Dryer {
@@ -32,9 +32,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                         print!("{}", "X".red())
                     }
                 },
-                Err(_) => print!("{}", "?".black()),
+                Err(_) => print!("?"),
             }
         }
+        println!();
         std::thread::sleep(Duration::from_secs(10));
     }
 }
