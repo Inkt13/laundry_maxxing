@@ -94,12 +94,27 @@ async fn main() -> Result<(), Box<dyn Error>> {
         // Persist this cycle's observations before sleeping.
         writer.flush()?;
 
-        println!(
-            "Cycle completed in {:.2}s. Next poll in 5 minutes.",
-            cycle_start.elapsed().as_secs_f64()
-        );
+        
+let cycle_duration = cycle_start.elapsed();
 
-        sleep(POLL_INTERVAL).await;
+println!(
+    "Cycle completed in {:.2}s.",
+    cycle_duration.as_secs_f64()
+);
+
+if cycle_duration < POLL_INTERVAL {
+    let remaining = POLL_INTERVAL - cycle_duration;
+
+    println!(
+        "Next poll in {:.2}s.",
+        remaining.as_secs_f64()
+    );
+
+    sleep(remaining).await;
+} else {
+    println!("Cycle exceeded 5 minutes. Starting next cycle immediately.");
+}
+
     }
 }
 
