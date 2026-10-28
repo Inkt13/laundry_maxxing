@@ -11,4 +11,7 @@ strum = "0.28.0"
 strum_macros = "0.28.0"
 chrono = "0.4.45"
 colored_text = "0.6.0"
+csv = "1"
+serde = { version = "1", features = ["derive"] }
+
 
