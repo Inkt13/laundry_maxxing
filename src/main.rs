@@ -62,7 +62,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
         for machine in LaundryMachine::iter() {
             let request_start = Instant::now();
-            let result = machine.is_free(&client).await;
+            let result = check_machine_with_retry(machine, &client).await;
             let request_ms = request_start.elapsed().as_millis().to_string();
 
             let (status, http_status, error) = match result {
@@ -112,4 +112,36 @@ fn machine_name(machine: LaundryMachine) -> &'static str {
         LaundryMachine::Washer5 => "Washer5",
         LaundryMachine::Dryer => "Dryer",
     }
+}
+
+async fn check_machine_with_retry(
+    machine: LaundryMachine,
+    client: &reqwest::Client,
+) -> Result<bool, Box<dyn Error>> {
+    for attempt in 0..2 {
+        match machine.is_free(client).await {
+            Ok(is_free) => return Ok(is_free),
+
+            Err(err) => {
+                let is_temporary_network_error = err
+                    .downcast_ref::<reqwest::Error>()
+                    .map(|e| e.is_timeout() || e.is_connect())
+                    .unwrap_or(false);
+
+                // Retry only temporary network failures.
+                if !is_temporary_network_error || attempt == 1 {
+                    return Err(err);
+                }
+
+                eprintln!(
+                    "Temporary network failure for {}. Retrying in 1 second...",
+                    machine_name(machine)
+                );
+
+                sleep(Duration::from_secs(1)).await;
+            }
+        }
+    }
+
+    unreachable!("The loop always returns a result");
 }

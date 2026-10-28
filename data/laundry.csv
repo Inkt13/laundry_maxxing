@@ -23,3 +23,15 @@ timestamp_utc,machine,status,request_ms,http_status,error
 2026-10-28T05:31:30.551259300+00:00,Washer4,occupied,132,200,
 2026-10-28T05:31:30.551259300+00:00,Washer5,occupied,111,200,
 2026-10-28T05:31:30.551259300+00:00,Dryer,free,123,200,
+2026-10-28T05:34:33.296186400+00:00,Washer1,occupied,383,200,
+2026-10-28T05:34:33.296186400+00:00,Washer2,free,136,200,
+2026-10-28T05:34:33.296186400+00:00,Washer3,occupied,133,200,
+2026-10-28T05:34:33.296186400+00:00,Washer4,occupied,115,200,
+2026-10-28T05:34:33.296186400+00:00,Washer5,occupied,116,200,
+2026-10-28T05:34:33.296186400+00:00,Dryer,free,171,200,
+2026-10-28T05:37:11.540866100+00:00,Washer1,unknown,4798,,HTTP status client error (405 Not Allowed) for url (https://userapi.qiekj.com/goods/normal/details)
+2026-10-28T05:37:11.540866100+00:00,Washer2,unknown,467,,HTTP status client error (405 Not Allowed) for url (https://userapi.qiekj.com/goods/normal/details)
+2026-10-28T05:37:11.540866100+00:00,Washer3,unknown,1260,,HTTP status client error (405 Not Allowed) for url (https://userapi.qiekj.com/goods/normal/details)
+2026-10-28T05:37:11.540866100+00:00,Washer4,unknown,465,,HTTP status client error (405 Not Allowed) for url (https://userapi.qiekj.com/goods/normal/details)
+2026-10-28T05:37:11.540866100+00:00,Washer5,unknown,467,,HTTP status client error (405 Not Allowed) for url (https://userapi.qiekj.com/goods/normal/details)
+2026-10-28T05:37:11.540866100+00:00,Dryer,unknown,3352,,HTTP status client error (405 Not Allowed) for url (https://userapi.qiekj.com/goods/normal/details)
